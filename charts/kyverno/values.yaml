@@ -183,9 +183,7 @@ existingImagePullSecrets: []
   # Define an existing image pull secret
   # existingImagePullSecrets:
   # - test-registry
-  # - other-test-registry
-
-r
+  # - other-test-registr
 
 # -- Liveness probe.
 # The block is directly forwarded into the deployment, so you can use whatever livenessProbe configuration you want.
