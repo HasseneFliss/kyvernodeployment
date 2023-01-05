@@ -328,7 +328,7 @@ topologySpreadConstraints: []
 
 metricsService:
   # -- Create service.
-  create: true
+  create: false
   # -- Service port.
   # Kyverno's metrics server will be exposed at this port.
   port: 8000
@@ -376,8 +376,8 @@ installCRDs: true
 crds:
   # -- Additional CRDs annotations.
   annotations: {}
-    # argocd.argoproj.io/sync-options: Replace=true
-    # strategy.spinnaker.io/replace: 'true'
+  argocd.argoproj.io/sync-options: Replace=true
+  strategy.spinnaker.io/replace: 'true'
 
 networkPolicy:
   # -- When true, use a NetworkPolicy to allow ingress to the webhook
