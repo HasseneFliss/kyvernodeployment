@@ -257,7 +257,7 @@ startupProbe:
     port: 9443
     scheme: HTTPS
   failureThreshold: 20
-  initialDelaySeconds: 2
+  initialDelaySeconds: 30
   periodSeconds: 6
 
 # -- Liveness probe.
