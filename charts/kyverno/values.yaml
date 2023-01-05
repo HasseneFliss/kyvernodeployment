@@ -97,6 +97,7 @@ podSecurityContext: {}
 
 # -- Security context for the test containers
 
+
 # -- Optional priority class to be used for kyverno pods
 priorityClassName: ''
 
@@ -183,12 +184,48 @@ existingImagePullSecrets: []
   # Define an existing image pull secret
   # existingImagePullSecrets:
   # - test-registry
-  # - other-test-registr
+  # - other-test-registry
+
+resources:
+  # -- Pod resource limits
+  limits:
+    memory: 384Mi
+  # -- Pod resource requests
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+initResources:
+  # -- Pod resource limits
+  limits:
+    cpu: 100m
+    memory: 256Mi
+  # -- Pod resource requests
+  requests:
+    cpu: 10m
+    memory: 64Mi
+
+testResources:
+  # -- Pod resource limits
+  limits:
+    cpu: 100m
+    memory: 256Mi
+  # -- Pod resource requests
+  requests:
+    cpu: 10m
+    memory: 64Mi
+
+# -- Startup probe.
+# The block is directly forwarded into the deployment, so you can use whatever startupProbes configuration you want.
+# ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
+# @default -- See [values.yaml](values.yaml)
+
 
 # -- Liveness probe.
 # The block is directly forwarded into the deployment, so you can use whatever livenessProbe configuration you want.
 # ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
 # @default -- See [values.yaml](values.yaml)
+
 
 # -- Readiness Probe.
 # The block is directly forwarded into the deployment, so you can use whatever readinessProbe configuration you want.
@@ -326,7 +363,36 @@ service:
 # -- Topology spread constraints.
 topologySpreadConstraints: []
 
+metricsService:
+  # -- Create service.
+  create: true
+  # -- Service port.
+  # Kyverno's metrics server will be exposed at this port.
+  port: 8000
+  # -- Service type.
+  type: ClusterIP
+  # -- Service node port.
+  # Only used if `metricsService.type` is `NodePort`.
+  nodePort:
+  # -- Service annotations.
+  annotations: {}
 
+serviceMonitor:
+  # -- Create a `ServiceMonitor` to collect Prometheus metrics.
+  enabled: false
+  # -- Additional labels
+  additionalLabels:
+    # key: value
+  # -- Override namespace (default is the same as kyverno)
+  namespace:
+  # --  Interval to scrape metrics
+  interval: 30s
+  # -- Timeout if metrics can't be retrieved in given time interval
+  scrapeTimeout: 25s
+  # -- Is TLS required for endpoint
+  secure: false
+  # -- TLS Configuration for endpoint
+  tlsConfig: {}
 
 # -- Kyverno requires a certificate key pair and corresponding certificate authority
 # to properly register its webhooks. This can be done in one of 3 ways:
@@ -338,7 +404,7 @@ topologySpreadConstraints: []
 #    kyverno-svc.kyverno.svc.kyverno-tls-pair (with data entries named tls.key and tls.crt)
 # 3) Let Helm generate a self signed cert, by setting createSelfSignedCert true
 # If letting Kyverno create its own CA or providing your own, make createSelfSignedCert is false
-createSelfSignedCert: true
+createSelfSignedCert: false
 
 # -- Whether to have Helm install the Kyverno CRDs.
 # If the CRDs are not installed by Helm, they must be added before policies can be created.
@@ -347,16 +413,33 @@ installCRDs: true
 crds:
   # -- Additional CRDs annotations.
   annotations: {}
-  argocd.argoproj.io/sync-options: Replace=true
-  strategy.spinnaker.io/replace: 'true'
+    # argocd.argoproj.io/sync-options: Replace=true
+    # strategy.spinnaker.io/replace: 'true'
 
+networkPolicy:
+  # -- When true, use a NetworkPolicy to allow ingress to the webhook
+  # This is useful on clusters using Calico and/or native k8s network policies in a default-deny setup.
+  enabled: false
+  # -- A list of valid from selectors according to https://kubernetes.io/docs/concepts/services-networking/network-policies.
+  ingressFrom: []
 
-
+webhooksCleanup:
+  # -- Create a helm pre-delete hook to cleanup webhooks.
+  enabled: false
+  # -- `kubectl` image to run commands for deleting webhooks.
+  image: bitnami/kubectl:latest
 
 # -- A writable volume to use for the TUF root initialization.
 tufRootMountPath: /.sigstore
 
-
+grafana:
+  # -- Enable grafana dashboard creation.
+  enabled: false
+  # -- Namespace to create the grafana dashboard configmap.
+  # If not set, it will be created in the same namespace where the chart is deployed.
+  namespace:
+  # -- Grafana dashboard configmap annotations.
+  annotations: {}
 
 cleanupController:
 
@@ -365,7 +448,7 @@ cleanupController:
 
   rbac:
     # -- Create RBAC resources
-    create: false
+    create: true
 
     serviceAccount:
       # -- Service account name
@@ -427,10 +510,54 @@ cleanupController:
 
   # -- Extra arguments passed to the container on the command line
   extraArgs: []
+
+  
+  # -- Startup probe.
+  # The block is directly forwarded into the deployment, so you can use whatever startupProbes configuration you want.
+  # ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
+  # @default -- See [values.yaml](values.yaml)
+  
+
+  # -- Liveness probe.
+  # The block is directly forwarded into the deployment, so you can use whatever livenessProbe configuration you want.
+  # ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
+
+
+  # -- Readiness Probe.
+  # The block is directly forwarded into the deployment, so you can use whatever readinessProbe configuration you want.
+  # ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
+  # @default -- See [values.yaml](values.yaml)
+  
+
+  # -- Node labels for pod assignment
+  nodeSelector: {}
+
+  # -- List of node taints to tolerate
+  tolerations: []
+
   antiAffinity:
     # -- Pod antiAffinities toggle.
     # Enabled by default but can be disabled if you want to schedule pods to the same node.
     enabled: true
+
+  # -- Pod anti affinity constraints.
+  # @default -- See [values.yaml](values.yaml)
+
+
+  # -- Pod affinity constraints.
+  podAffinity: {}
+
+  # -- Node affinity constraints.
+  nodeAffinity: {}
+
+  # -- Topology spread constraints.
+  topologySpreadConstraints: []
+
+  # -- Security context for the pod
+  podSecurityContext: {}
+
+  # -- Security context for the containers
+  
 
   podDisruptionBudget:
     # -- Configures the minimum available pods for disruptions.
@@ -451,6 +578,59 @@ cleanupController:
     # -- Service annotations.
     annotations: {}
 
-  
+  metricsService:
+    # -- Create service.
+    create: true
+    # -- Service port.
+    # Metrics server will be exposed at this port.
+    port: 8000
+    # -- Service type.
+    type: ClusterIP
+    # -- Service node port.
+    # Only used if `metricsService.type` is `NodePort`.
+    nodePort:
+    # -- Service annotations.
+    annotations: {}
 
-  
+  serviceMonitor:
+    # -- Create a `ServiceMonitor` to collect Prometheus metrics.
+    enabled: false
+    # -- Additional labels
+    additionalLabels:
+      # key: value
+    # -- Override namespace (default is the same as kyverno)
+    namespace:
+    # --  Interval to scrape metrics
+    interval: 30s
+    # -- Timeout if metrics can't be retrieved in given time interval
+    scrapeTimeout: 25s
+    # -- Is TLS required for endpoint
+    secure: false
+    # -- TLS Configuration for endpoint
+    tlsConfig: {}
+
+  tracing:
+    # -- Enable tracing
+    enabled: false
+    # -- Traces receiver address
+    address:
+    # -- Traces receiver port
+    port:
+    # -- Traces receiver credentials
+    creds: ''
+
+  logging:
+    # -- Logging format
+    format: text
+
+  metering:
+    # -- Disable metrics export
+    disabled: false
+    # -- Otel configuration, can be `prometheus` or `grpc`
+    config: prometheus
+    # -- Prometheus endpoint port
+    port: 8000
+    # -- Otel collector endpoint
+    collector: ''
+    # -- Otel collector credentials
+    creds: ''
