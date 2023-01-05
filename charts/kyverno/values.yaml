@@ -93,6 +93,10 @@ podAnnotations: {}
 # -- Security context for the pod
 podSecurityContext: {}
 
+# -- Security context for the containers
+
+
+# -- Security context for the test containers
 
 
 # -- Optional priority class to be used for kyverno pods
@@ -183,23 +187,22 @@ existingImagePullSecrets: []
   # existingImagePullSecrets:
   # - test-registry
   # - other-test-registry
+
+
 # -- Startup probe.
 # The block is directly forwarded into the deployment, so you can use whatever startupProbes configuration you want.
 # ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
 # @default -- See [values.yaml](values.yaml)
-
 
 # -- Liveness probe.
 # The block is directly forwarded into the deployment, so you can use whatever livenessProbe configuration you want.
 # ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
 # @default -- See [values.yaml](values.yaml)
 
-
 # -- Readiness Probe.
 # The block is directly forwarded into the deployment, so you can use whatever readinessProbe configuration you want.
 # ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
 # @default -- See [values.yaml](values.yaml)
-
 
 # -- Additional resources to be added to controller RBAC permissions.
 generatecontrollerExtraResources: []
@@ -480,17 +483,24 @@ cleanupController:
   extraArgs: []
 
   
-
   # -- Startup probe.
   # The block is directly forwarded into the deployment, so you can use whatever startupProbes configuration you want.
   # ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
   # @default -- See [values.yaml](values.yaml)
   
+
   # -- Liveness probe.
   # The block is directly forwarded into the deployment, so you can use whatever livenessProbe configuration you want.
   # ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
   # @default -- See [values.yaml](values.yaml)
   
+
+  # -- Readiness Probe.
+  # The block is directly forwarded into the deployment, so you can use whatever readinessProbe configuration you want.
+  # ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
+  # @default -- See [values.yaml](values.yaml)
+  
+
   # -- Node labels for pod assignment
   nodeSelector: {}
 
@@ -505,7 +515,6 @@ cleanupController:
   # -- Pod anti affinity constraints.
   # @default -- See [values.yaml](values.yaml)
   
-
   # -- Pod affinity constraints.
   podAffinity: {}
 
