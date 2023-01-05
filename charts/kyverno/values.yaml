@@ -336,8 +336,8 @@ installCRDs: true
 crds:
   # -- Additional CRDs annotations.
   annotations: {}
-     argocd.argoproj.io/sync-options: Replace=true
-     strategy.spinnaker.io/replace: 'true'
+  argocd.argoproj.io/sync-options: Replace=true
+  strategy.spinnaker.io/replace: 'true'
 
 # -- A writable volume to use for the TUF root initialization.
 tufRootMountPath: /.sigstore
