@@ -39,7 +39,7 @@ image:
   repository: ghcr.io/kyverno/kyverno  # kyverno: replaced in e2e tests
   # -- Image tag
   # Defaults to appVersion in Chart.yaml if omitted
-  tag:  # replaced in e2e tests
+  tag:  1.7.3
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Image pull secrets
@@ -56,7 +56,7 @@ initImage:
   repository: ghcr.io/kyverno/kyvernopre  # init: replaced in e2e tests
   # -- Image tag
   # If initImage.tag is missing, defaults to image.tag
-  tag:  # replaced in e2e tests
+  tag: 1.7.3
   # -- Image pull policy
   # If initImage.pullPolicy is missing, defaults to image.pullPolicy
   pullPolicy:
@@ -74,7 +74,7 @@ testImage:
   repository: busybox
   # -- Image tag
   # Defaults to `latest` if omitted
-  tag:
+  tag: 1.7.3
   # -- Image pull policy
   # Defaults to image.pullPolicy if omitted
   pullPolicy:
