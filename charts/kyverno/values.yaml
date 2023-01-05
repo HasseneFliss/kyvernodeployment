@@ -273,7 +273,7 @@ livenessProbe:
   periodSeconds: 50
   timeoutSeconds: 50
   failureThreshold: 2
-  successThreshold: 2
+  successThreshold: 1
 
 # -- Readiness Probe.
 # The block is directly forwarded into the deployment, so you can use whatever readinessProbe configuration you want.
