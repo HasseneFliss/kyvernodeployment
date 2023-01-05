@@ -551,7 +551,7 @@ cleanupController:
 
   metricsService:
     # -- Create service.
-    create: true
+    create: false
     # -- Service port.
     # Metrics server will be exposed at this port.
     port: 8000
