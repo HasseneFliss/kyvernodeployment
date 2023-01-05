@@ -269,11 +269,11 @@ livenessProbe:
     path: /health/liveness
     port: 9443
     scheme: HTTPS
-  initialDelaySeconds: 15
-  periodSeconds: 30
-  timeoutSeconds: 5
+  initialDelaySeconds: 50
+  periodSeconds: 50
+  timeoutSeconds: 50
   failureThreshold: 2
-  successThreshold: 1
+  successThreshold: 2
 
 # -- Readiness Probe.
 # The block is directly forwarded into the deployment, so you can use whatever readinessProbe configuration you want.
@@ -284,9 +284,9 @@ readinessProbe:
     path: /health/readiness
     port: 9443
     scheme: HTTPS
-  initialDelaySeconds: 5
-  periodSeconds: 10
-  timeoutSeconds: 5
+  initialDelaySeconds: 50
+  periodSeconds: 50
+  timeoutSeconds: 50
   failureThreshold: 6
   successThreshold: 1
 
@@ -599,9 +599,9 @@ cleanupController:
       path: /health/liveness
       port: 9443
       scheme: HTTPS
-    initialDelaySeconds: 15
-    periodSeconds: 30
-    timeoutSeconds: 5
+    initialDelaySeconds: 50
+    periodSeconds: 50
+    timeoutSeconds: 50
     failureThreshold: 2
     successThreshold: 1
 
@@ -614,9 +614,9 @@ cleanupController:
       path: /health/readiness
       port: 9443
       scheme: HTTPS
-    initialDelaySeconds: 5
-    periodSeconds: 10
-    timeoutSeconds: 5
+    initialDelaySeconds: 50
+    periodSeconds: 50
+    timeoutSeconds: 50
     failureThreshold: 6
     successThreshold: 1
 
