@@ -183,18 +183,6 @@ existingImagePullSecrets: []
   # existingImagePullSecrets:
   # - test-registry
   # - other-test-registry
-
-resources:
-  # -- Pod resource limits
-  limits:
-    memory: 384Mi
-  # -- Pod resource requests
-  requests:
-    cpu: 100m
-    memory: 128Mi
-
-
-
 # -- Startup probe.
 # The block is directly forwarded into the deployment, so you can use whatever startupProbes configuration you want.
 # ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
