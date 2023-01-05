@@ -336,7 +336,7 @@ topologySpreadConstraints: []
 
 metricsService:
   # -- Create service.
-  create: true
+  create: false
   # -- Service port.
   # Kyverno's metrics server will be exposed at this port.
   port: 8000
@@ -375,7 +375,7 @@ serviceMonitor:
 #    kyverno-svc.kyverno.svc.kyverno-tls-pair (with data entries named tls.key and tls.crt)
 # 3) Let Helm generate a self signed cert, by setting createSelfSignedCert true
 # If letting Kyverno create its own CA or providing your own, make createSelfSignedCert is false
-createSelfSignedCert: false
+createSelfSignedCert: true
 
 # -- Whether to have Helm install the Kyverno CRDs.
 # If the CRDs are not installed by Helm, they must be added before policies can be created.
@@ -415,7 +415,7 @@ grafana:
 cleanupController:
 
   # -- Enable cleanup controller.
-  enabled: false
+  enabled: true
 
   rbac:
     # -- Create RBAC resources
