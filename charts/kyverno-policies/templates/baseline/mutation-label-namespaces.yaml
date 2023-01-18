@@ -23,7 +23,7 @@ spec:
     mutate:
       targets:
       - apiVersion: 1
-        kind: namespace
+        kind: Namespace
       patchStrategicMerge:
         metadata:
           labels:
