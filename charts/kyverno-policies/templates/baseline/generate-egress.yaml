@@ -29,7 +29,7 @@ spec:
       kind: NetworkPolicy
       apiVersion: networking.k8s.io/v1
       name: default-deny
-      namespace: "{{request.object.metadata.name}}"
+      namespace: kubecost
       synchronize: true
       data:
         metadata:
