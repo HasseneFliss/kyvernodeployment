@@ -39,17 +39,3 @@ spec:
           podSelector: {}
           policyTypes:
           - Egress
-    generate:
-      kind: NetworkPolicy
-      apiVersion: networking.k8s.io/v1
-      name: default-deny
-      namespace: kyverno       
-      synchronize: true
-      data:
-        metadata:
-          labels:
-            created-by: mr-devops
-        spec:
-          podSelector: {}
-          policyTypes:
-          - ingress
