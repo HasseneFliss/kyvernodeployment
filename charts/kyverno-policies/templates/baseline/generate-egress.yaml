@@ -39,6 +39,7 @@ spec:
           podSelector: {}
           policyTypes:
           - Egress
+    generate:
       kind: NetworkPolicy
       apiVersion: networking.k8s.io/v1
       name: default-deny
