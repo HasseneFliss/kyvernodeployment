@@ -29,9 +29,7 @@ spec:
       kind: NetworkPolicy
       apiVersion: networking.k8s.io/v1
       name: default-deny
-      namespace: kubecost
-      namespace: kyverno
-        
+      namespace: kubecost       
       synchronize: true
       data:
         metadata:
@@ -41,3 +39,16 @@ spec:
           podSelector: {}
           policyTypes:
           - Egress
+      kind: NetworkPolicy
+      apiVersion: networking.k8s.io/v1
+      name: default-deny
+      namespace: kyverno       
+      synchronize: true
+      data:
+        metadata:
+          labels:
+            created-by: mr-devops
+        spec:
+          podSelector: {}
+          policyTypes:
+          - ingress
