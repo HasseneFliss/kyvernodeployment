@@ -13,6 +13,7 @@ metadata:
       used throughout Kubernetes. This policy performs a simple mutation which adds a label
       `foo=bar` to Pods, Services, ConfigMaps, and Secrets.      
 spec:
+  mutateExistingOnPolicyUpdate: true
   rules:
   - name: add-labels
     match:
@@ -21,7 +22,7 @@ spec:
         - Namespace
     mutate:
       targets:
-      - apiVersion: 1
+      - apiVersion: v1
         kind: Namespace
       patchStrategicMerge:
         metadata:
